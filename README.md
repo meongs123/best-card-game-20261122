@@ -1,8 +1,8 @@
 # Lelang Senja
 
-[![make.fun](https://img.shields.io/badge/make.fun-LIVE-brightgreen)](https://make.fun/bounty/best-card-game-20261122-1826)
-[![make.fun bounty](https://img.shields.io/badge/bounty-best--card--game--20261122--1826-gold)](https://make.fun/bounty/best-card-game-20261122-1826)
-[![make.fun entry](https://img.shields.io/badge/entry-meongs123%2Fbest--card--game--20261122-blue)](https://github.com/meongs123/best-card-game-20261122)
+[![make.fun · best-card-game-20261122-1826](https://make.fun/badge/best-card-game-20261122-1826.svg)](https://make.fun/bounty/best-card-game-20261122-1826?utm_source=github&utm_medium=readme&utm_campaign=best-card-game-20261122-1826)
+[![rank](https://make.fun/badge/best-card-game-20261122-1826/meongs123/best-card-game-20261122/rank.svg)](https://make.fun/bounty/best-card-game-20261122-1826/leaderboard?utm_source=github&utm_medium=readme&utm_campaign=best-card-game-20261122-1826)
+[![reward](https://make.fun/badge/best-card-game-20261122-1826/meongs123/best-card-game-20261122/reward.svg)](https://make.fun/bounty/best-card-game-20261122-1826?utm_source=github&utm_medium=readme&utm_campaign=best-card-game-20261122-1826)
 
 A sunset-market heirloom auction card game, built for the
 [make.fun](https://make.fun/bounty/best-card-game-20261122-1826)
