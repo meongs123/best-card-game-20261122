@@ -34,6 +34,10 @@ likely bid range from their past bids and visible purse, and the round log
 keeps every past bid on the table. Bluff, manage your purse, and time your
 abilities — a Topeng into a Tukar wins rounds a raw number never could.
 
+Peeking is not free: once a Topeng has shown you the rival's bid, switching
+to a different card spends that Topeng from your hand — so the peek is a
+real decision, not a free look every round.
+
 ## How to play
 
 - **Mouse:** click a Bid card in your hand, adjust your coin stake with
@@ -50,14 +54,16 @@ Serve `game/` with any static server (for example `node serve.ts`) and open
 Play it with mouse or keyboard — every screen (title, table, win, loss) is
 reachable by playing real rounds, nothing is staged for the screenshots.
 
-Deterministic screenshots: `game/index.html?shot=title|play|win|loss&seed=1`
-plays real rounds from a fresh world with an autopilot and sets
-`window.__shotReady` when the frame is ready (see `shots.json`).
+Deterministic screenshots: `game/index.html?shot=title|play|win&seed=1`
+(and `?shot=loss&seed=5` — the careless pilot only truly loses from that
+seed once the rival bids its real stakes) plays real rounds from a fresh
+world with an autopilot and sets `window.__shotReady` when the frame is
+ready (see `shots.json`).
 
 ## Layout
 
 - `game/index.html` — page shell
-- `game/css/table.css` — sunset-market table, card flip/slide animations
+- `game/css/table.css` — sunset-market table, hover lift + selected highlight + gold win glow
 - `game/src/state.js` — round state, scores, coin purses
 - `game/src/deck.js` — heirloom deck + bid deck, seeded shuffle
 - `game/src/bids.js` — the four abilities + simultaneous-reveal resolution

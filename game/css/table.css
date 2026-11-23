@@ -30,14 +30,14 @@ button:disabled { opacity: 0.45; cursor: default; }
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 10px 18px 4px;
+  padding: 16px 18px 6px;
 }
 .brand { font-size: 26px; letter-spacing: 3px; color: #f5c96b; font-weight: bold; }
 .brand-sub { font-size: 13px; letter-spacing: 1px; color: #c9b896; font-weight: normal; }
 .round-label { font-size: 18px; color: #f5ead2; }
 #mute-btn { background: #1d4a45; color: #f5ead2; border: 1px solid #d9a441; border-radius: 6px; padding: 6px 10px; font-size: 14px; }
 
-.side-row { display: flex; align-items: center; gap: 14px; padding: 2px 18px; }
+.side-row { display: flex; align-items: center; gap: 14px; padding: 6px 18px; }
 .side-info { width: 170px; flex: none; }
 .side-name { font-size: 17px; font-weight: bold; }
 .side-score { font-size: 30px; font-weight: bold; color: #f5c96b; line-height: 1.1; }
@@ -48,14 +48,14 @@ button:disabled { opacity: 0.45; cursor: default; }
 .rival-hand { justify-content: center; }
 /* Rival backs are smaller than player cards so all eight fit clear of the
    side panel at 1280px wide. */
-.rival-hand .card { width: 70px; height: 96px; }
+.rival-hand .card { width: 70px; height: 104px; }
 .rival-hand .card-glyph { font-size: 26px; }
 .rival-hand .card-name { font-size: 12px; }
 .player-hand { justify-content: flex-start; }
 
 .card {
   width: 96px;
-  height: 128px;
+  height: 140px;
   border-radius: 10px;
   background: linear-gradient(160deg, #fdf6e3, #f3e2b8);
   color: #231a10;
@@ -98,8 +98,8 @@ button:disabled { opacity: 0.45; cursor: default; }
   justify-content: center;
   align-items: center;
   gap: 26px;
-  padding: 6px 0 2px;
-  min-height: 150px;
+  padding: 10px 0 4px;
+  min-height: 220px;
 }
 .bid-slot { width: 120px; min-height: 140px; display: flex; flex-direction: column; align-items: center; gap: 4px; }
 .stake-badge { font-size: 14px; background: #d9a441; color: #231a10; border-radius: 10px; padding: 2px 8px; font-weight: bold; }
@@ -108,15 +108,15 @@ button:disabled { opacity: 0.45; cursor: default; }
 .heirloom-card .card-name { font-size: 16px; }
 .heirloom-card .card-value { font-size: 26px; color: #b45309; }
 
-.reveal-result { text-align: center; font-size: 18px; min-height: 26px; color: #f5ead2; }
+.reveal-result { text-align: center; font-size: 18px; min-height: 30px; color: #f5ead2; }
 .reveal-result.player { color: #f5c96b; font-weight: bold; }
 .reveal-result.rival { color: #f0a35e; font-weight: bold; }
 .reveal-result.peek { color: #c4b5fd; font-style: italic; }
-.next-wrap { text-align: center; min-height: 30px; }
+.next-wrap { text-align: center; min-height: 34px; }
 #next-btn { background: #d9a441; color: #231a10; border: none; border-radius: 8px; padding: 6px 18px; font-size: 16px; font-weight: bold; }
 
-#player-row { padding-top: 0; }
-#controls { display: flex; align-items: center; justify-content: center; gap: 18px; padding: 4px 240px 0 18px; }
+#player-row { padding-top: 10px; }
+#controls { display: flex; align-items: center; justify-content: center; gap: 18px; padding: 10px 240px 16px 18px; }
 .stake-box { display: flex; align-items: center; gap: 8px; font-size: 16px; }
 .stake-box button { width: 34px; height: 34px; font-size: 20px; background: #1d4a45; color: #f5ead2; border: 1px solid #d9a441; border-radius: 6px; }
 #stake-value { min-width: 76px; text-align: center; font-weight: bold; color: #f5c96b; }
@@ -158,7 +158,26 @@ button:disabled { opacity: 0.45; cursor: default; }
   z-index: 10;
 }
 .overlay-card { text-align: center; max-width: 620px; padding: 26px 34px; background: #123734; border: 3px solid #d9a441; border-radius: 16px; box-shadow: 0 0 60px rgba(217, 164, 65, 0.35); }
-.overlay-card.gold { border-color: #f5c96b; box-shadow: 0 0 80px rgba(245, 201, 107, 0.55); }
+.overlay-card.gold {
+  border-color: #f5c96b;
+  box-shadow: 0 0 80px rgba(245, 201, 107, 0.55);
+  /* Gold burst behind the win card: the win must read as a flourish in a
+     still screenshot, not just as another text card with a brighter border. */
+  background:
+    radial-gradient(ellipse at 50% 0%, rgba(245, 201, 107, 0.38), transparent 60%),
+    radial-gradient(ellipse at 50% 115%, rgba(245, 201, 107, 0.25), transparent 55%),
+    #123734;
+}
+.overlay-card.gold::before {
+  content: '✦ ✦ ✦ ✦ ✦';
+  display: block;
+  font-size: 26px;
+  letter-spacing: 10px;
+  color: #f5c96b;
+  line-height: 1;
+  margin-bottom: 4px;
+}
+.overlay-card.gold .overlay-moon { font-size: 64px; }
 .overlay-moon { font-size: 52px; color: #f5c96b; line-height: 1; }
 .overlay-card h1 { font-size: 44px; letter-spacing: 4px; color: #f5c96b; margin: 8px 0 4px; }
 .overlay-sub { font-size: 19px; margin: 4px 0; }

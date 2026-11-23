@@ -27,6 +27,9 @@ export function createGame(seed) {
     history: [],
     winner: null,
     lastResult: null,
+    // True once the player has peeked with a Topeng this round. Switching
+    // away after a peek spends that Topeng — the peek is never free.
+    peekedThisRound: false,
   };
   // Deal round one eagerly so the title screen already shows a full table
   // behind its overlay — the cover shot never needs an empty table.
@@ -61,6 +64,7 @@ export function startRound(game) {
   game.rival.chosen = null;
   game.rival.stake = 0;
   game.lastResult = null;
+  game.peekedThisRound = false;
   game.phase = 'pick';
   game.log.push('Ronde ' + game.round + ': ' + game.heirloom.name + ' (' + game.heirloom.points + ' poin) naik ke meja.');
   return true;
@@ -83,7 +87,17 @@ export function chooseBidCard(game, side, handIndex) {
   const person = game[side];
   if (game.phase !== 'pick') return false;
   if (handIndex < 0 || handIndex >= person.hand.length) return false;
-  person.chosen = person.hand[handIndex];
+  const next = person.hand[handIndex];
+  if (side === 'player' && game.peekedThisRound && person.chosen && person.chosen.ability === 'topeng' && next.ability !== 'topeng') {
+    // The peek was paid for with the Topeng that spied: switching to a
+    // different card after peeking spends that Topeng from the hand, so
+    // the exact rival bid can never be read for free round after round.
+    const at = person.hand.indexOf(person.chosen);
+    if (at !== -1) person.hand.splice(at, 1);
+    game.peekedThisRound = false;
+  }
+  person.chosen = next;
+  if (side === 'player' && next.ability === 'topeng') game.peekedThisRound = true;
   return true;
 }
 
@@ -104,4 +118,7 @@ export function discardPlayedCards(game) {
     const at = person.hand.indexOf(person.chosen);
     if (at !== -1) person.hand.splice(at, 1);
   }
+  // A reveal ends the round, so a peek flag must never survive into the
+  // next one — startRound resets it too, this is the belt to its braces.
+  game.peekedThisRound = false;
 }

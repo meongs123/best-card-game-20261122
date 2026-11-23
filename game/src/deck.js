@@ -22,7 +22,7 @@ export const HEIRLOOMS = [
   { name: 'Wayang Kulit', points: 6, glyph: '▲', colour: '#2dd4bf' },
   { name: 'Piring Porselen', points: 4, glyph: '◍', colour: '#93c5fd' },
   { name: 'Cincin Zamrud', points: 8, glyph: '⬡', colour: '#34d399' },
-  { name: 'Lukisan Kapal', points: 5, glyph: '▤', colour: '#fda4af' },
+  { name: 'Lukisan Kapal', points: 5, glyph: '❖', colour: '#fda4af' }, // ❖ renders as a clean diamond in the screenshot font; ▤ showed as a broken box.
   { name: 'Tasbih Manik', points: 3, glyph: '●', colour: '#f87171' },
   { name: 'Gong Perunggu', points: 7, glyph: '◎', colour: '#d97706' },
   { name: 'Selendang Sutra', points: 4, glyph: '✧', colour: '#f0abfc' },

@@ -20,26 +20,40 @@ export function chooseRivalBid(game) {
   const want = heirloom.points + (behind ? 2 : 0) - (ahead ? 1 : 0);
   const jitter = game.rng() < 0.35 ? 1 : 0;
 
-  const sorted = rival.hand.slice().sort((a, b) => a.value - b.value);
-  // Prefer a Tukar or Gertak card when the heirloom is rich: abilities win
-  // rounds a bare number cannot, and the player should see them used.
-  let picked = sorted[sorted.length - 1];
-  for (const card of sorted) {
-    if (card.value + 2 >= want + jitter) {
-      picked = card;
-      break;
-    }
-  }
-
-  const handIndex = rival.hand.indexOf(picked);
-  chooseBidCard(game, 'rival', handIndex);
-
+  // The stake is decided FIRST: the pick threshold below must test the
+  // same number the rival actually spends. Testing value + 2 while only
+  // staking 1 (or 0) made the rival underbid its own plan on every
+  // heirloom below 7 points.
   let stake = 0;
   if (heirloom.points >= 7) stake = 2;
   else if (heirloom.points >= 5) stake = 1;
   if (behind && heirloom.points >= 5) stake += 1;
   if (rival.coins <= 2) stake = 0;
-  setStake(game, 'rival', Math.min(stake, rival.coins));
+  stake = Math.min(stake, rival.coins);
+
+  // A Gertak card counts double, so its effective strength — not its bare
+  // value — is what the threshold must test.
+  const effective = (card) => (card.ability === 'gertak' ? (card.value + stake) * 2 : card.value + stake);
+
+  const sorted = rival.hand.slice().sort((a, b) => a.value - b.value);
+  let picked = sorted[sorted.length - 1];
+  for (const card of sorted) {
+    if (effective(card) >= want + jitter) {
+      picked = card;
+      break;
+    }
+  }
+
+  // No blind Tukar preference here: a swap hands the rival the player's
+  // unseen bid, so preferring Tukar on rich heirlooms backfired — against
+  // a weak player it swapped a winning card for a tiny one. The
+  // Gertak-aware threshold above is the ability play the rival can judge
+  // from its own hand alone.
+
+  const handIndex = rival.hand.indexOf(picked);
+  chooseBidCard(game, 'rival', handIndex);
+
+  setStake(game, 'rival', stake);
 }
 
 /**

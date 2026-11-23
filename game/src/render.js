@@ -104,6 +104,11 @@ function renderHands(game) {
   const playerHand = byId('player-hand');
   playerHand.replaceChildren();
   game.player.hand.forEach((card, index) => {
+    // The chosen bid already sits in the centre slot during pick — showing
+    // it in the hand too would put the same card on the table twice.
+    // Skipping one element here never shifts the 1–8 keyboard mapping,
+    // because the click handler still closes over the full hand index.
+    if (game.phase === 'pick' && game.player.chosen === card) return;
     const selected = game.player.chosen === card;
     const element = buildBidCardElement(card, {
       selected,
@@ -114,7 +119,17 @@ function renderHands(game) {
 
   const rivalHand = byId('rival-hand');
   rivalHand.replaceChildren();
-  game.rival.hand.forEach(() => rivalHand.appendChild(buildCardBackElement()));
+  // The rival's chosen bid is already represented in the centre slot
+  // (face-up while peeked, face-down otherwise), so one back fewer keeps
+  // the rival's visible card count honest during pick.
+  let rivalBidHidden = false;
+  game.rival.hand.forEach((card) => {
+    if (game.phase === 'pick' && game.rival.chosen === card && !rivalBidHidden) {
+      rivalBidHidden = true;
+      return;
+    }
+    rivalHand.appendChild(buildCardBackElement());
+  });
 }
 
 /** Centre of the table: heirloom, the two revealed bids, and the pot. */
@@ -158,7 +173,7 @@ function renderCentre(game) {
       : 'Seri ' + r.playerEff + '–' + r.rivalEff + ' — pusaka tidak berpindah.';
     result.className = 'reveal-result ' + (r.winner || 'draw');
   } else if (peeked) {
-    result.textContent = 'Topeng mengintip: tawaran lawan ' + game.rival.chosen.value + ' (' + ABILITIES[game.rival.chosen.ability].name + ').';
+    result.textContent = 'Topeng mengintip: tawaran lawan ' + game.rival.chosen.value + ' (' + ABILITIES[game.rival.chosen.ability].name + '). Ganti kartu = Topeng ini terbuang.';
     result.className = 'reveal-result peek';
   } else {
     result.textContent = game.phase === 'pick' ? 'Pilih satu kartu tawaran, atur keping, lalu buka bersamaan.' : '';
