@@ -1,0 +1,66 @@
+// The rival for Lelang Senja: an opponent whose choices can be read.
+// One job: pick the rival's bid card + stake, and describe what the rival
+// is likely to do next, from the visible history and purse.
+
+import { chooseBidCard, setStake } from './state.js';
+
+/**
+ * The rival reads the table: the richer the heirloom, the harder they bid;
+ * trailing in points makes them push, a thin purse makes them hold back.
+ * They spend the smallest card that can plausibly win, keeping big cards
+ * for the big heirlooms still to come.
+ */
+export function chooseRivalBid(game) {
+  const rival = game.rival;
+  const heirloom = game.heirloom;
+  if (!heirloom || rival.hand.length === 0) return;
+
+  const behind = rival.score < game.player.score;
+  const ahead = rival.score > game.player.score;
+  const want = heirloom.points + (behind ? 2 : 0) - (ahead ? 1 : 0);
+  const jitter = game.rng() < 0.35 ? 1 : 0;
+
+  const sorted = rival.hand.slice().sort((a, b) => a.value - b.value);
+  // Prefer a Tukar or Gertak card when the heirloom is rich: abilities win
+  // rounds a bare number cannot, and the player should see them used.
+  let picked = sorted[sorted.length - 1];
+  for (const card of sorted) {
+    if (card.value + 2 >= want + jitter) {
+      picked = card;
+      break;
+    }
+  }
+
+  const handIndex = rival.hand.indexOf(picked);
+  chooseBidCard(game, 'rival', handIndex);
+
+  let stake = 0;
+  if (heirloom.points >= 7) stake = 2;
+  else if (heirloom.points >= 5) stake = 1;
+  if (behind && heirloom.points >= 5) stake += 1;
+  if (rival.coins <= 2) stake = 0;
+  setStake(game, 'rival', Math.min(stake, rival.coins));
+}
+
+/**
+ * What the player can read about the rival's next move: the range of their
+ * past effective bids, plus how many coins they still hold. A rival who
+ * has been bidding high and still holds coins is about to push again.
+ */
+export function rivalTell(game) {
+  const past = game.history;
+  const coins = game.rival.coins;
+  if (past.length === 0) {
+    return { low: 2, high: 8, text: 'Lawan belum menunjukkan gaya. Perhatikan tawaran pertamanya.' };
+  }
+  const bids = past.map((entry) => entry.rivalBid);
+  const average = bids.reduce((sum, value) => sum + value, 0) / bids.length;
+  const low = Math.max(1, Math.floor(average) - 2);
+  const high = Math.min(12, Math.ceil(average) + 2);
+  const last = past[past.length - 1];
+  let mood = 'Lawan bermain seimbang.';
+  if (last.rivalBid >= 9) mood = 'Lawan sedang agresif — tawaran terakhirnya besar.';
+  else if (last.rivalBid <= 4) mood = 'Lawan sedang hemat — tawaran terakhirnya kecil.';
+  if (coins <= 3) mood += ' Dompetnya hampir kosong.';
+  return { low, high, text: mood + ' Dugaan tawaran berikutnya: ' + low + '–' + high + '. Keping lawan: ' + coins + '.' };
+}

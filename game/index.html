@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lelang Senja — lelang pusaka di pasar senja</title>
+<link rel="stylesheet" href="./css/table.css">
+</head>
+<body>
+<div id="table">
+  <header id="topbar">
+    <div class="brand">☾ LELANG SENJA <span class="brand-sub">lelang pusaka · pasar senja</span></div>
+    <div id="round-label" class="round-label">Pasar belum dibuka</div>
+    <button id="mute-btn" type="button" aria-label="Suara">♪ Suara: nyala</button>
+  </header>
+
+  <section id="rival-row" class="side-row" aria-label="Tangan lawan">
+    <div class="side-info rival-info">
+      <div class="side-name">⛩ Lawan — Juragan Malam</div>
+      <div id="rival-score" class="side-score">0 / 30</div>
+      <div id="rival-coins" class="side-coins">◉ 12 keping</div>
+    </div>
+    <div id="rival-hand" class="hand rival-hand"></div>
+  </section>
+
+  <section id="centre-row">
+    <div class="bid-slot" id="rival-bid-slot" aria-label="Tawaran lawan"></div>
+    <div id="heirloom-slot" aria-label="Pusaka yang dilelang"></div>
+    <div class="bid-slot" id="player-bid-slot" aria-label="Tawaran Anda"></div>
+  </section>
+  <div id="reveal-result" class="reveal-result" role="status"></div>
+  <div class="next-wrap"><button id="next-btn" type="button">Ronde berikut →</button></div>
+
+  <section id="player-row" class="side-row" aria-label="Tangan Anda">
+    <div class="side-info player-info">
+      <div class="side-name">✦ Anda</div>
+      <div id="player-score" class="side-score">0 / 30</div>
+      <div id="player-coins" class="side-coins">◉ 12 keping</div>
+    </div>
+    <div id="player-hand" class="hand player-hand"></div>
+  </section>
+
+  <section id="controls">
+    <div class="stake-box">
+      <span class="stake-label">Taruhan keping:</span>
+      <button id="stake-minus" type="button" aria-label="Kurangi taruhan">−</button>
+      <span id="stake-value">0 keping</span>
+      <button id="stake-plus" type="button" aria-label="Tambah taruhan">+</button>
+    </div>
+    <button id="reveal-btn" type="button">Buka Tawaran (Enter)</button>
+    <div id="hint-line" class="hint-line">Klik kartu / 1–8 · + / − keping · Enter buka · R main lagi</div>
+  </section>
+
+  <aside id="side-panel">
+    <div class="panel-title">🔍 Dugaan Lawan</div>
+    <div id="tell-range" class="tell-range">Dugaan: 2–8</div>
+    <p id="tell-text" class="tell-text">Lawan belum menunjukkan gaya. Perhatikan tawaran pertamanya.</p>
+    <div class="panel-title">📜 Riwayat Lelang</div>
+    <ul id="log-list" class="log-list"></ul>
+    <div class="panel-title">◆ ▲ ● ■ Empat Kemampuan</div>
+    <ul class="ability-list">
+      <li><span class="dot ability-topeng">◆</span> <b>Topeng</b> — intip tawaran lawan</li>
+      <li><span class="dot ability-tukar">▲</span> <b>Tukar</b> — tukar kedua tawaran</li>
+      <li><span class="dot ability-gertak">●</span> <b>Gertak</b> — tawaran ganda, kalah rugi 2 keping</li>
+      <li><span class="dot ability-jebakan">■</span> <b>Jebakan</b> — menang tipis curi 2 keping</li>
+    </ul>
+    <p class="target-line">Menang di 30 poin, atau poin terbanyak setelah 8 ronde.</p>
+  </aside>
+
+  <div id="screen-title" class="overlay">
+    <div class="overlay-card">
+      <div class="overlay-moon">☾</div>
+      <h1>LELANG SENJA</h1>
+      <p class="overlay-sub">Lelang pusaka di pasar senja — delapan pusaka, satu pasar, satu pemenang.</p>
+      <p class="overlay-rules">Tiap ronde satu pusaka dibuka. Pilih satu kartu tawaran tertutup + taruhan keping, lalu buka bersamaan dengan lawan. Tawaran efektif tertinggi memenangkan pusaka. Topeng mengintip, Tukar menukar, Gertak mengganda, Jebakan mencuri. Pertama ke 30 poin menang — atau poin terbanyak setelah 8 ronde.</p>
+      <button id="start-btn" type="button">Buka Pasar (Enter)</button>
+      <p class="overlay-keys">Klik atau keyboard: 1–8 pilih kartu · + / − keping · Enter buka</p>
+    </div>
+  </div>
+
+  <div id="screen-win" class="overlay" style="display:none">
+    <div class="overlay-card gold">
+      <div class="overlay-moon">✦</div>
+      <h1>PASAR MILIK ANDA!</h1>
+      <p class="overlay-sub">Anda memenangkan lelang senja.</p>
+      <p id="win-final" class="overlay-final"></p>
+      <button id="again-btn" type="button">Main Lagi (R)</button>
+    </div>
+  </div>
+
+  <div id="screen-loss" class="overlay" style="display:none">
+    <div class="overlay-card">
+      <div class="overlay-moon">☾</div>
+      <h1>PASAR LEPAS…</h1>
+      <p id="loss-sub" class="overlay-sub">Juragan Malam memenangkan lelang kali ini.</p>
+      <p id="loss-final" class="overlay-final"></p>
+      <button id="again-loss-btn" type="button">Coba Lagi (R)</button>
+    </div>
+  </div>
+</div>
+<script type="module" src="./src/main.js"></script>
+</body>
+</html>
